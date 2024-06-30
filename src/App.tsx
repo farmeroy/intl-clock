@@ -5,6 +5,7 @@ type Coords = {
 };
 
 type NominatimPlace = {
+  place_id: number;
   name: string;
   display_name: string;
   lat: number;
@@ -16,11 +17,20 @@ function App() {
   const [search, setSearch] = useState("");
   const [timeZone, setTimeZone] = useState("");
   console.log({ places });
-  const getPlacesHandler = async (event: FormEvent) => {
-    event.preventDefault();
+
+  const handleSearchAgain = () => {
+    const placeIds = places.map((place) => place.place_id).join(", ");
+    getPlacesHandler(`&exclude_place_ids=${placeIds}`);
+  };
+
+  const onSubmitSearch = (e: FormEvent) => {
+    e.preventDefault();
+    getPlacesHandler();
+  };
+  const getPlacesHandler = async (params = "") => {
     try {
       const results = await fetch(
-        `https://nominatim.openstreetmap.org/search?q=${search}&format=jsonv2`
+        `https://nominatim.openstreetmap.org/search?q=${search}&format=jsonv2${params}`
       );
       if (results.ok) {
         setPlaces(await results.json());
@@ -51,28 +61,38 @@ function App() {
   return (
     <>
       <h1>International Clock</h1>
-      <form onSubmit={getPlacesHandler}>
+      <form onSubmit={onSubmitSearch}>
         <label>
           Search location
           <input
+            className="p-1 m-1 border border-1 rounded-md"
             name="place-search"
             type="text"
             onChange={(e) => setSearch(e.target.value)}
           />
         </label>
+        <button>Search</button>
       </form>
       <div>
-        <ul className="absolute bg-white border w-96 border-1">
-          {places.map((place) => (
+        {places.length > 0 ? (
+          <ul className="absolute p-1 bg-white border w-96 border-1">
+            {places.map((place) => (
+              <li>
+                <button
+                  className="w-full p-1 border border-1 rounded-md bg-gray"
+                  onClick={() =>
+                    getTimeZone({ lat: place.lat, lon: place.lon })
+                  }
+                >
+                  {place.display_name}
+                </button>
+              </li>
+            ))}
             <li>
-              <button
-                onClick={() => getTimeZone({ lat: place.lat, lon: place.lon })}
-              >
-                {place.display_name}
-              </button>
+              <button onClick={handleSearchAgain}>Search again</button>
             </li>
-          ))}
-        </ul>
+          </ul>
+        ) : null}
       </div>
       <div>{timeZone}</div>
     </>
