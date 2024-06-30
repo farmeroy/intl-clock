@@ -44,8 +44,8 @@ function App() {
         <label >Search location
           <input name="place-search" type="text" onChange={(e) => setSearch(e.target.value)} />
         </label>
-      </form>  
-      <ul>
+      </form>
+      <ul className="absolute w-96">
       {places.map(place => (
         <li><button onClick={() => getTimeZone({lat: place.lat, lon: place.lon})}>{place.display_name}</button></li> 
       ))}</ul>
