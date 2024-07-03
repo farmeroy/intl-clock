@@ -12,6 +12,16 @@ type NominatimPlace = {
   lon: number;
 };
 
+const mockPlaces: NominatimPlace[] = [
+  {
+    place_id: 1,
+    name: "sonoma",
+    display_name: "Sonoma County",
+    lat: 49.99,
+    lon: -39.99,
+  },
+];
+
 function App() {
   const [places, setPlaces] = useState<NominatimPlace[]>([]);
   const [search, setSearch] = useState("");
@@ -44,10 +54,6 @@ function App() {
     try {
       const res = await fetch(
         `http://localhost:9000?lat=${coords.lat}&lon=${coords.lon}`,
-        {
-          mode: "cors",
-          credentials: "same-origin",
-        }
       );
       if (res.ok) {
         const { timezone } = await res.json();
@@ -58,8 +64,36 @@ function App() {
       console.error({ error });
     }
   };
+  const showPlaces = places.length > 0;
   return (
     <>
+      {showPlaces ? (
+        <>
+          <div className="absolute flex w-screen h-screen bg-black opacity-50" onClick={() => setPlaces([])} />
+          <dialog
+            open={showPlaces}
+            className="p-4 mt-16 bg-white border min-w-96 border-1"
+          >
+            <ul>
+              {places.map((place) => (
+                <li>
+                  <button
+                    className="w-full p-1 border border-1 rounded-md bg-gray"
+                    onClick={() =>
+                      getTimeZone({ lat: place.lat, lon: place.lon })
+                    }
+                  >
+                    {place.display_name}
+                  </button>
+                </li>
+              ))}
+              <li>
+                <button onClick={handleSearchAgain}>Search again</button>
+              </li>
+            </ul>
+          </dialog>
+        </>
+      ) : null}
       <h1>International Clock</h1>
       <form onSubmit={onSubmitSearch}>
         <label>
@@ -73,27 +107,6 @@ function App() {
         </label>
         <button>Search</button>
       </form>
-      <div>
-        {places.length > 0 ? (
-          <ul className="absolute p-1 bg-white border w-96 border-1">
-            {places.map((place) => (
-              <li>
-                <button
-                  className="w-full p-1 border border-1 rounded-md bg-gray"
-                  onClick={() =>
-                    getTimeZone({ lat: place.lat, lon: place.lon })
-                  }
-                >
-                  {place.display_name}
-                </button>
-              </li>
-            ))}
-            <li>
-              <button onClick={handleSearchAgain}>Search again</button>
-            </li>
-          </ul>
-        ) : null}
-      </div>
       <div>{timeZone}</div>
     </>
   );
