@@ -12,21 +12,16 @@ type NominatimPlace = {
   lon: number;
 };
 
-const mockPlaces: NominatimPlace[] = [
-  {
-    place_id: 1,
-    name: "sonoma",
-    display_name: "Sonoma County",
-    lat: 49.99,
-    lon: -39.99,
-  },
-];
+type Clock = {
+  place: NominatimPlace;
+  timeZone: string;
+};
 
 function App() {
   const [places, setPlaces] = useState<NominatimPlace[]>([]);
   const [search, setSearch] = useState("");
-  const [timeZone, setTimeZone] = useState("");
-  console.log({ places });
+
+  const [clocks, setClocks] = useState<Clock[]>([]);
 
   const handleSearchAgain = () => {
     const placeIds = places.map((place) => place.place_id).join(", ");
@@ -50,14 +45,14 @@ function App() {
     }
   };
 
-  const getTimeZone = async (coords: Coords) => {
+  const getTimeZone = async (place: NominatimPlace) => {
     try {
       const res = await fetch(
-        `http://localhost:9000?lat=${coords.lat}&lon=${coords.lon}`,
+        `http://localhost:9000?lat=${place.lat}&lon=${place.lon}`
       );
       if (res.ok) {
-        const { timezone } = await res.json();
-        setTimeZone(timezone);
+        const {timezone} = await res.json();
+        setClocks(clocks => [...clocks, {place, timeZone: timezone}])
         setPlaces([]);
       }
     } catch (error) {
@@ -69,7 +64,10 @@ function App() {
     <>
       {showPlaces ? (
         <>
-          <div className="absolute flex w-screen h-screen bg-black opacity-50" onClick={() => setPlaces([])} />
+          <div
+            className="absolute flex w-screen h-screen bg-black opacity-50"
+            onClick={() => setPlaces([])}
+          />
           <dialog
             open={showPlaces}
             className="p-4 mt-16 bg-white border min-w-96 border-1"
@@ -80,7 +78,7 @@ function App() {
                   <button
                     className="w-full p-1 border border-1 rounded-md bg-gray"
                     onClick={() =>
-                      getTimeZone({ lat: place.lat, lon: place.lon })
+                      getTimeZone(place)
                     }
                   >
                     {place.display_name}
@@ -107,7 +105,15 @@ function App() {
         </label>
         <button>Search</button>
       </form>
-      <div>{timeZone}</div>
+      {clocks.map(({ place, timeZone }) => (
+        <div>
+          <div>
+          <p>{place.name}</p>
+          <p>{place.display_name}</p>
+          <p>{timeZone}</p>
+          </div>
+        </div>
+      ))}
     </>
   );
 }
