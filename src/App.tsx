@@ -1,5 +1,6 @@
-import { FormEvent,  useState } from "react";
+import { FormEvent, useState } from "react";
 import Clock from "./components/Clock/Clock";
+import PlacesModal from "./components/PlacesModal/PlacesModal";
 
 export type NominatimPlace = {
   place_id: number;
@@ -19,7 +20,6 @@ function App() {
   const [search, setSearch] = useState("");
 
   const [clocks, setClocks] = useState<Clock[]>([]);
-
 
   const handleSearchAgain = () => {
     const placeIds = places.map((place) => place.place_id).join(", ");
@@ -59,52 +59,39 @@ function App() {
   };
   const showPlaces = places.length > 0;
   return (
-    <>
-      {showPlaces ? (
-        <>
-          <div
-            className="absolute flex w-screen h-screen bg-black opacity-50"
-            onClick={() => setPlaces([])}
-          />
-          <dialog
-            open={showPlaces}
-            className="p-4 mt-16 bg-white border min-w-96 border-1"
-          >
-            <ul>
-              {places.map((place) => (
-                <li>
-                  <button
-                    className="w-full p-1 border border-1 rounded-md bg-gray"
-                    onClick={() => getTimeZone(place)}
-                  >
-                    {place.display_name}
-                  </button>
-                </li>
-              ))}
-              <li>
-                <button onClick={handleSearchAgain}>Search again</button>
-              </li>
-            </ul>
-          </dialog>
-        </>
-      ) : null}
+    <div className="mx-auto text-center">
+      <PlacesModal
+        places={places}
+        isOpen={showPlaces}
+        handleClose={() => setPlaces([])}
+        handleSelect={getTimeZone}
+        handleSearchAgain={handleSearchAgain}
+      />
       <h1>International Clock</h1>
       <form onSubmit={onSubmitSearch}>
-        <label>
-          Search location
-          <input
+        <input
+          placeholder="Search for a location..."
+          value={search}
             className="p-1 m-1 border border-1 rounded-md"
             name="place-search"
             type="text"
             onChange={(e) => setSearch(e.target.value)}
           />
-        </label>
         <button>Search</button>
       </form>
+      <div className="flex flex-wrap justify-center">
       {clocks.map(({ place, timeZone }) => (
-        <Clock place={place} timeZone={timeZone}  />
-      ))}
-    </>
+        <Clock
+          place={place}
+          timeZone={timeZone}
+          onClose={() =>
+            setClocks((clocks) =>
+              clocks.filter((clock) => clock.place.place_id != place.place_id)
+            )
+          }
+        />
+      ))}</div>
+    </div>
   );
 }
 
