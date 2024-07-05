@@ -1,10 +1,7 @@
-import { FormEvent, useState } from "react";
-type Coords = {
-  lat: number;
-  lon: number;
-};
+import { FormEvent,  useState } from "react";
+import Clock from "./components/Clock/Clock";
 
-type NominatimPlace = {
+export type NominatimPlace = {
   place_id: number;
   name: string;
   display_name: string;
@@ -22,6 +19,7 @@ function App() {
   const [search, setSearch] = useState("");
 
   const [clocks, setClocks] = useState<Clock[]>([]);
+
 
   const handleSearchAgain = () => {
     const placeIds = places.map((place) => place.place_id).join(", ");
@@ -51,8 +49,8 @@ function App() {
         `http://localhost:9000?lat=${place.lat}&lon=${place.lon}`
       );
       if (res.ok) {
-        const {timezone} = await res.json();
-        setClocks(clocks => [...clocks, {place, timeZone: timezone}])
+        const { timezone } = await res.json();
+        setClocks((clocks) => [...clocks, { place, timeZone: timezone }]);
         setPlaces([]);
       }
     } catch (error) {
@@ -77,9 +75,7 @@ function App() {
                 <li>
                   <button
                     className="w-full p-1 border border-1 rounded-md bg-gray"
-                    onClick={() =>
-                      getTimeZone(place)
-                    }
+                    onClick={() => getTimeZone(place)}
                   >
                     {place.display_name}
                   </button>
@@ -106,13 +102,7 @@ function App() {
         <button>Search</button>
       </form>
       {clocks.map(({ place, timeZone }) => (
-        <div>
-          <div>
-          <p>{place.name}</p>
-          <p>{place.display_name}</p>
-          <p>{timeZone}</p>
-          </div>
-        </div>
+        <Clock place={place} timeZone={timeZone}  />
       ))}
     </>
   );
