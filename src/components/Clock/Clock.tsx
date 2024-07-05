@@ -26,8 +26,8 @@ const Clock = ({
         <p className="text-sm">{timeZone}</p>
       </div>
       <div className="flex flex-col items-center justify-around">
-        <p className="text-xl">{new Date(time).toLocaleTimeString("en-US", {timeZone})}</p>
-        <p className="text-sm">{new Date(time).toLocaleDateString("en-US", {timeZone})}</p>
+        <p className="text-xl">{new Date(time).toLocaleTimeString("en-US", {timeZone, hour12: false})}</p>
+        <p className="text-sm">{new Date(time).toLocaleDateString("en-US", {timeZone, month: "long", year: 'numeric', day: "numeric" })}</p>
       </div></div>
       <button className="absolute top-2 right-2" onClick={onClose}>X</button>
     </div>
