@@ -19,7 +19,7 @@ const Clock = ({
   }, []);
 
   return (
-    <div className="relative p-4 m-2 border rounded-lg shadow-md w-96 border-1">
+    <div className="relative p-4 m-2 border rounded-lg shadow-md dark:text-white w-96 border-1">
       <div className="p-2">
       <div>
         <p className="font-bold text-lg truncate ...">{place.display_name}</p>

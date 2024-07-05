@@ -60,7 +60,7 @@ function App() {
   };
   const showPlaces = places.length > 0;
   return (
-    <div>
+    <div className="w-screen h-screen dark:bg-slate-800">
       <PlacesModal
         places={places}
         isOpen={showPlaces}
@@ -69,7 +69,7 @@ function App() {
         handleSearchAgain={handleSearchAgain}
       />
       <div className="p-4 mx-auto text-center">
-      <h1 className="text-lg">International Clock</h1>
+      <h1 className="text-lg dark:text-white">International Clock</h1>
       <form onSubmit={onSubmitSearch}>
         <input
           placeholder="Search for a location..."
@@ -79,7 +79,7 @@ function App() {
           type="text"
           onChange={(e) => setSearch(e.target.value)}
         />
-        <button className="p-2 m-1 border rounded-lg border-1 hover:border-black focus:outline duration-300 focus:ease-in-out focus:outline-black focus:outline-1">
+        <button className="p-2 m-1 border rounded-lg dark:text-white border-1 hover:border-black dark:hover:border-slate-200 focus:outline duration-300 focus:ease-in-out focus:outline-black focus:outline-1">
           Search
         </button>
       </form>
