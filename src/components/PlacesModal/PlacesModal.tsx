@@ -29,9 +29,9 @@ const PlacesModal = ({
             <div className="bg-white pd-2">
             <ul className="flex flex-col gap-2">
               {places.map((place) => (
-                <li className="hover:bg-gray-100">
+                <li className="hover:bg-gray-100 duration-300 hover:ease-in-out">
                   <button
-                    className="w-full p-1 border border-1 rounded-md bg-gray"
+                    className="w-full p-2 border rounded-lg border-1 bg-gray"
                     onClick={() => handleSelect(place)}
                   >
                     {place.display_name}

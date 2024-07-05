@@ -37,6 +37,7 @@ function App() {
       );
       if (results.ok) {
         setPlaces(await results.json());
+        setSearch("");
       }
     } catch (error) {
       console.error({ error });
@@ -59,7 +60,7 @@ function App() {
   };
   const showPlaces = places.length > 0;
   return (
-    <div className="mx-auto text-center">
+    <div>
       <PlacesModal
         places={places}
         isOpen={showPlaces}
@@ -67,30 +68,35 @@ function App() {
         handleSelect={getTimeZone}
         handleSearchAgain={handleSearchAgain}
       />
-      <h1>International Clock</h1>
+      <div className="p-4 mx-auto text-center">
+      <h1 className="text-lg">International Clock</h1>
       <form onSubmit={onSubmitSearch}>
         <input
           placeholder="Search for a location..."
           value={search}
-            className="p-1 m-1 border border-1 rounded-md"
-            name="place-search"
-            type="text"
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        <button>Search</button>
+          className="p-2 m-1 border rounded-lg border-1 hover:border-black duration-300 focus:ease-in-out focus:outline focus:outline-black focus:outline-1"
+          name="place-search"
+          type="text"
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <button className="p-2 m-1 border rounded-lg border-1 hover:border-black focus:outline duration-300 focus:ease-in-out focus:outline-black focus:outline-1">
+          Search
+        </button>
       </form>
       <div className="flex flex-wrap justify-center">
-      {clocks.map(({ place, timeZone }) => (
-        <Clock
-          place={place}
-          timeZone={timeZone}
-          onClose={() =>
-            setClocks((clocks) =>
-              clocks.filter((clock) => clock.place.place_id != place.place_id)
-            )
-          }
-        />
-      ))}</div>
+        {clocks.map(({ place, timeZone }) => (
+          <Clock
+            place={place}
+            timeZone={timeZone}
+            onClose={() =>
+              setClocks((clocks) =>
+                clocks.filter((clock) => clock.place.place_id != place.place_id)
+              )
+            }
+          />
+        ))}
+      </div>
+</div>
     </div>
   );
 }
