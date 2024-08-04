@@ -45,10 +45,12 @@ function App() {
   };
 
   const getTimeZone = async (place: NominatimPlace) => {
+    console.log({place})
     try {
       const res = await fetch(
-        `http://localhost:9000?lat=${place.lat}&lon=${place.lon}`
+        `https://xtxl2gg4mbesfksqq4d7w5cy7m0jygtk.lambda-url.us-east-1.on.aws/?lat=${place.lat}&lon=${place.lon}`
       );
+      console.log({res})
       if (res.ok) {
         const { timezone } = await res.json();
         setClocks((clocks) => [...clocks, { place, timeZone: timezone }]);
