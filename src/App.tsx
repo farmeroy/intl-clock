@@ -1,6 +1,7 @@
 import { FormEvent, useState } from "react";
 import Clock from "./components/Clock/Clock";
 import PlacesModal from "./components/PlacesModal/PlacesModal";
+import {TimeProvider} from "./contexts/TimeProvider";
 
 export type NominatimPlace = {
   place_id: number;
@@ -63,6 +64,7 @@ function App() {
   const showPlaces = places.length > 0;
 
   return (
+    <TimeProvider>
     <div className="w-screen h-screen dark:bg-slate-800">
       <PlacesModal
         places={places}
@@ -101,7 +103,8 @@ function App() {
         ))}
       </div>
 </div>
-    </div>
+      </div>
+    </TimeProvider>
   );
 }
 
