@@ -18,11 +18,10 @@ type Clock = {
 function App() {
   const [places, setPlaces] = useState<NominatimPlace[]>([]);
   const [search, setSearch] = useState("");
-
   const [clocks, setClocks] = useState<Clock[]>([]);
 
   const handleSearchAgain = () => {
-    const placeIds = places.map((place) => place.place_id).join(", ");
+    const placeIds = places.map((place) => place.place_id).join(",");
     getPlacesHandler(`&exclude_place_ids=${placeIds}`);
   };
 
@@ -31,13 +30,14 @@ function App() {
     getPlacesHandler();
   };
   const getPlacesHandler = async (params = "") => {
+    const url = `https://nominatim.openstreetmap.org/search?q=${search}&format=jsonv2${params}`
+    console.log({url})
     try {
       const results = await fetch(
-        `https://nominatim.openstreetmap.org/search?q=${search}&format=jsonv2${params}`
+       url 
       );
       if (results.ok) {
         setPlaces(await results.json());
-        setSearch("");
       }
     } catch (error) {
       console.error({ error });
@@ -45,30 +45,31 @@ function App() {
   };
 
   const getTimeZone = async (place: NominatimPlace) => {
-    console.log({place})
     try {
       const res = await fetch(
-        `https://xtxl2gg4mbesfksqq4d7w5cy7m0jygtk.lambda-url.us-east-1.on.aws/?lat=${place.lat}&lon=${place.lon}`
+        `${import.meta.env.VITE_TIME_ZONE_URL}/?lat=${place.lat}&lon=${place.lon}`
       );
-      console.log({res})
       if (res.ok) {
         const { timezone } = await res.json();
         setClocks((clocks) => [...clocks, { place, timeZone: timezone }]);
         setPlaces([]);
+        setSearch("");
       }
     } catch (error) {
       console.error({ error });
     }
   };
+
   const showPlaces = places.length > 0;
+
   return (
     <div className="w-screen h-screen dark:bg-slate-800">
       <PlacesModal
         places={places}
         isOpen={showPlaces}
         handleClose={() => setPlaces([])}
-        handleSelect={getTimeZone}
-        handleSearchAgain={handleSearchAgain}
+        onSelect={getTimeZone}
+        onSearchAgain={handleSearchAgain}
       />
       <div className="p-4 mx-auto text-center">
       <h1 className="text-lg dark:text-white">International Clock</h1>
@@ -88,6 +89,7 @@ function App() {
       <div className="flex flex-wrap justify-center">
         {clocks.map(({ place, timeZone }) => (
           <Clock
+            key={place.place_id}
             place={place}
             timeZone={timeZone}
             onClose={() =>
