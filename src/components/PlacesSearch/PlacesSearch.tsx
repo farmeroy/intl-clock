@@ -2,13 +2,14 @@ import { FormEvent, useState } from "react";
 import PlacesModal from "../PlacesModal/PlacesModal";
 import { NominatimPlace } from "../../App";
 
-export default function PlacesSearch({
-  onSelectPlace,
-}: {
+interface PlacesSearchProps {
   onSelectPlace: (arg0: NominatimPlace, timezone: string) => void;
-}) {
+}
+
+export default function PlacesSearch({ onSelectPlace }: PlacesSearchProps) {
   const [places, setPlaces] = useState<NominatimPlace[]>([]);
   const [search, setSearch] = useState("");
+
   const handleSearchAgain = () => {
     const placeIds = places.map((place) => place.place_id).join(",");
     getPlacesHandler(`&exclude_place_ids=${placeIds}`);

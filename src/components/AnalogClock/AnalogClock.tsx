@@ -49,7 +49,6 @@ const AnalogClock: React.FC<ClockProps> = ({ size = 200, color = 'black', time, 
   const center = size / 2;
   const strokeWidth = size / 100;
 
-  // Generate hour markers
   const hourMarkers = Array.from({ length: 12 }, (_, index) => {
     const angle = (index * 30);
     return (
