@@ -9,7 +9,7 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "test": "vitest",
-    "deploy:": "aws s3 sync dist/ s3://clock.raffaelecataldo.com --delete"
+    "deploy": "aws s3 sync dist/ s3://clock.raffaelecataldo.com --delete"
   },
   "dependencies": {
     "react": "^18.3.1",
