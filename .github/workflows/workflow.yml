@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - master
+env:
+  VITE_TIME_ZONE_URL: ${{secrets.VITE_TIME_ZONE_URL}} 
+
 jobs:
   build:
     runs-on: ubuntu-latest
