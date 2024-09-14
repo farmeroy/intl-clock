@@ -1,5 +1,6 @@
-import {useState} from "react";
-import {NominatimPlace} from "../../App";
+import { useState } from "react";
+import { NominatimPlace } from "../../App";
+import Button from "../Button/Button";
 
 type PlacesModalProps = {
   places: NominatimPlace[];
@@ -25,7 +26,7 @@ const PlacesModal = ({
 
   const handleSearchAgain = () => {
     onSearchAgain();
-  }
+  };
 
   return (
     <>
@@ -46,17 +47,16 @@ const PlacesModal = ({
                     key={place.place_id}
                     className="hover:bg-gray-100 dark:hover:bg-slate-700 duration-300 hover:ease-in-out"
                   >
-                    <button
+                    <Button
                       disabled={isLoading}
-                      className="w-full p-2 border rounded-lg border-1 bg-gray disabled:opacity-2"
                       onClick={() => handleSelect(place)}
                     >
                       {place.display_name}
-                    </button>
+                    </Button>
                   </li>
                 ))}
                 <li>
-                  <button onClick={handleSearchAgain}>More Results</button>{" "}
+                  <button onClick={handleSearchAgain}>More Results</button>
                 </li>
               </ul>
             </div>

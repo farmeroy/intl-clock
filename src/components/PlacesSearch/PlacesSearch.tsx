@@ -19,6 +19,7 @@ export default function PlacesSearch({ onSelectPlace }: PlacesSearchProps) {
     e.preventDefault();
     getPlacesHandler();
   };
+
   const getPlacesHandler = async (params = "") => {
     const url = `https://nominatim.openstreetmap.org/search?q=${search}&format=jsonv2${params}`;
     try {
