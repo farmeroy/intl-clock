@@ -60,7 +60,7 @@ export default function PlacesSearch({ onSelectPlace }: PlacesSearchProps) {
         onSearchAgain={handleSearchAgain}
       />
       <div className="p-4 mx-auto text-center">
-        <h1 className="text-lg dark:text-white">International Clock</h1>
+        <h1 className="text-xl dark:text-white">International Clock</h1>
         <form onSubmit={onSubmitSearch}>
           <input
             placeholder="Search for a location..."

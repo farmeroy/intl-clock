@@ -65,7 +65,7 @@ function App() {
             />
           ))}
         </div>
-        <div className="p-4 mx-auto mt-auto text-center">
+        <div className="fixed w-full text-center bottom-8">
           <p>
             Look up an place and display the local time there (uses the{" "}
             <a
