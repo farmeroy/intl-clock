@@ -65,7 +65,29 @@ function App() {
             />
           ))}
         </div>
-        <p>Look up an place (using <a href="https://nominatim.org/">Nominatim database</a>) and display the local time there.</p>
+        <div className="p-4 mx-auto mt-auto text-center">
+          <p>
+            Look up an place and display the local time there (uses the{" "}
+            <a
+              target="_blank"
+              className="underline"
+              href="https://nominatim.org/"
+            >
+              Nominatim database
+            </a>
+            ).
+          </p>
+          <p>
+            The time zone is calculated using a ray tracing package called{" "}
+            <a
+              target="_blank"
+              className="underline"
+              href="https://crates.io/crates/tzf-rs"
+            >
+              tzf-rs
+            </a>
+          </p>
+        </div>
       </div>
     </TimeProvider>
   );

@@ -31,3 +31,5 @@ jobs:
           aws-region: eu-west-1
       - name: Deploy to S3
         run: npm run deploy
+      - name: Invalide CloudFront cache
+        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.DISTRIBUTION_ID }} --paths "/*"

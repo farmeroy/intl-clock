@@ -65,7 +65,7 @@ export default function PlacesSearch({ onSelectPlace }: PlacesSearchProps) {
           <input
             placeholder="Search for a location..."
             value={search}
-            className="p-2 m-1 border rounded-lg border-1 hover:border-black duration-300 focus:ease-in-out focus:outline focus:outline-black focus:outline-1"
+            className="p-2 m-1 text-black border rounded-lg border-1 hover:border-black duration-300 focus:ease-in-out focus:outline focus:outline-black focus:outline-1"
             name="place-search"
             type="text"
             onChange={(e) => setSearch(e.target.value)}
