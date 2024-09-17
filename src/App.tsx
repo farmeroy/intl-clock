@@ -53,7 +53,7 @@ function App() {
 
   return (
     <TimeProvider>
-      <div className="w-screen h-screen dark:bg-slate-800">
+      <div className="w-full h-full">
         <PlacesSearch onSelectPlace={addClock} />
         <div className="flex flex-wrap justify-center">
           {clocks.map(({ place, timeZone }) => (
