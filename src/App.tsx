@@ -65,6 +65,7 @@ function App() {
             />
           ))}
         </div>
+        <p>Look up an place (using <a href="https://nominatim.org/">Nominatim database</a>) and display the local time there.</p>
       </div>
     </TimeProvider>
   );
