@@ -53,19 +53,21 @@ function App() {
 
   return (
     <TimeProvider>
-      <div className="w-full h-full">
-        <PlacesSearch onSelectPlace={addClock} />
-        <div className="flex flex-wrap justify-center">
-          {clocks.map(({ place, timeZone }) => (
-            <Clock
-              key={place.place_id}
-              place={place}
-              timeZone={timeZone}
-              onClose={() => removeClock(place)}
-            />
-          ))}
+      <div className="flex flex-col justify-between">
+        <div className="h-full min-h-[90vh] basis-1">
+          <PlacesSearch onSelectPlace={addClock} />
+          <div className="flex flex-wrap justify-center">
+            {clocks.map(({ place, timeZone }) => (
+              <Clock
+                key={place.place_id}
+                place={place}
+                timeZone={timeZone}
+                onClose={() => removeClock(place)}
+              />
+            ))}
+          </div>
         </div>
-        <div className="fixed w-full text-center bottom-8">
+        <div className="w-full text-center basis-0">
           <p>
             Look up an place and display the local time there (uses the{" "}
             <a
