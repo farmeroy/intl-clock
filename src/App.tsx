@@ -52,46 +52,48 @@ function App() {
   };
 
   return (
-    <TimeProvider>
-      <div className="flex flex-col justify-between">
-        <div className="h-full min-h-[90vh] basis-1">
-          <PlacesSearch onSelectPlace={addClock} />
-          <div className="flex flex-wrap justify-center">
-            {clocks.map(({ place, timeZone }) => (
-              <Clock
-                key={place.place_id}
-                place={place}
-                timeZone={timeZone}
-                onClose={() => removeClock(place)}
-              />
-            ))}
-          </div>
-        </div>
-        <div className="w-full text-center basis-0">
-          <p>
-            Look up an place and display the local time there (uses the{" "}
-            <a
-              target="_blank"
-              className="underline"
-              href="https://nominatim.org/"
-            >
-              Nominatim database
-            </a>
-            ).
-          </p>
-          <p>
-            The time zone is calculated using a ray tracing package called{" "}
-            <a
-              target="_blank"
-              className="underline"
-              href="https://crates.io/crates/tzf-rs"
-            >
-              tzf-rs
-            </a>
-          </p>
-        </div>
+    <div className="flex flex-col justify-between">
+      <div className="h-full min-h-[90vh]">
+        <PlacesSearch onSelectPlace={addClock} />
+        {clocks.length > 0 ? (
+          <TimeProvider>
+            <div className="flex flex-wrap justify-center">
+              {clocks.map(({ place, timeZone }) => (
+                <Clock
+                  key={place.place_id}
+                  place={place}
+                  timeZone={timeZone}
+                  onClose={() => removeClock(place)}
+                />
+              ))}
+            </div>
+          </TimeProvider>
+        ) : null}
       </div>
-    </TimeProvider>
+      <div className="w-full h-full text-center">
+        <p>
+          Look up an place and display the local time there (uses the{" "}
+          <a
+            target="_blank"
+            className="underline"
+            href="https://nominatim.org/"
+          >
+            Nominatim database
+          </a>
+          ).
+        </p>
+        <p>
+          The time zone is calculated using a ray tracing package called{" "}
+          <a
+            target="_blank"
+            className="underline"
+            href="https://crates.io/crates/tzf-rs"
+          >
+            tzf-rs
+          </a>
+        </p>
+      </div>
+    </div>
   );
 }
 
