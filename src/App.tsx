@@ -57,6 +57,9 @@ function App() {
       <div className="flex flex-col justify-between">
         <div className="h-full min-h-[90vh]">
           <PlacesSearch onSelectPlace={addClock} />
+          <div className="flex justify-center">
+            <ClockFormatToggleButton />
+          </div>
           {clocks.length > 0 ? (
             <div className="flex flex-wrap justify-center">
               {clocks.map(({ place, timeZone }) => (
