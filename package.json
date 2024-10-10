@@ -12,6 +12,7 @@
     "deploy": "aws s3 sync dist/ s3://clock.raffaelecataldo.com --delete"
   },
   "dependencies": {
+    "@headlessui/react": "^2.1.9",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
