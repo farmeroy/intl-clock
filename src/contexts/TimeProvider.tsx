@@ -3,7 +3,7 @@ import React, { createContext, useState, useEffect } from "react";
 export interface TimeContextType {
   currentTime: number;
   clockFormat: ClockFormat;
-  toggleClockFormat: () => React.Dispatch<ClockFormat>;
+  setClockFormat: React.Dispatch<ClockFormat>;
 }
 
 type ClockFormat = "12-Hour" | "24-Hour";
@@ -18,10 +18,6 @@ export const TimeProvider: React.FC<React.PropsWithChildren> = ({
   const [currentTime, setCurrentTime] = useState(Date.now());
   const [clockFormat, setClockFormat] = useState<ClockFormat>("12-Hour");
 
-  const toggleClockFormat = () => {
-    setClockFormat((format) => (format == "12-Hour" ? "24-Hour" : "12-Hour"));
-  };
-
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentTime(Date.now());
@@ -31,9 +27,7 @@ export const TimeProvider: React.FC<React.PropsWithChildren> = ({
   }, []);
 
   return (
-    <TimeContext.Provider
-      value={{ currentTime, clockFormat, toggleClockFormat }}
-    >
+    <TimeContext.Provider value={{ currentTime, clockFormat, setClockFormat }}>
       {children}
     </TimeContext.Provider>
   );

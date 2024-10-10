@@ -1,6 +1,7 @@
 import { FormEvent, useState } from "react";
 import PlacesModal from "../PlacesModal/PlacesModal";
 import { NominatimPlace } from "../../App";
+import ClockFormatToggleButton from "../ClockFormatToggleButton/ClockFomatToggleButton";
 
 interface PlacesSearchProps {
   onSelectPlace: (arg0: NominatimPlace, timezone: string) => void;
@@ -19,7 +20,6 @@ export default function PlacesSearch({ onSelectPlace }: PlacesSearchProps) {
     e.preventDefault();
     getPlacesHandler();
   };
-
   const getPlacesHandler = async (params = "") => {
     const url = `https://nominatim.openstreetmap.org/search?q=${search}&format=jsonv2${params}`;
     try {
@@ -61,19 +61,22 @@ export default function PlacesSearch({ onSelectPlace }: PlacesSearchProps) {
       />
       <div className="p-4 mx-auto text-center">
         <h1 className="text-xl dark:text-white">International Clock</h1>
-        <form onSubmit={onSubmitSearch}>
-          <input
-            placeholder="Search for a location..."
-            value={search}
-            className="p-2 m-1 text-black border rounded-lg border-1 hover:border-black duration-300 focus:ease-in-out focus:outline focus:outline-black focus:outline-1"
-            name="place-search"
-            type="text"
-            onChange={(e) => setSearch(e.target.value)}
-          />
-          <button className="p-2 m-1 border rounded-lg dark:text-white border-1 hover:border-black dark:hover:border-slate-200 focus:outline duration-300 focus:ease-in-out focus:outline-black focus:outline-1">
-            Search
-          </button>
-        </form>
+        <div className="flex items-center justify-center">
+          <form onSubmit={onSubmitSearch}>
+            <input
+              placeholder="Search for a location..."
+              value={search}
+              className="p-2 m-1 text-black border rounded-lg border-1 hover:border-black duration-300 focus:ease-in-out focus:outline focus:outline-black focus:outline-1"
+              name="place-search"
+              type="text"
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <button className="p-2 m-1 border rounded-lg dark:text-white border-1 hover:border-black dark:hover:border-slate-200 focus:outline duration-300 focus:ease-in-out focus:outline-black focus:outline-1">
+              Search
+            </button>
+          </form>
+          <ClockFormatToggleButton />
+        </div>
       </div>
     </>
   );
