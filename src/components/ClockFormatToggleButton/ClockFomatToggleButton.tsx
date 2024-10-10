@@ -1,4 +1,4 @@
-import { Field, Label, Radio, RadioGroup } from "@headlessui/react";
+import { Field,  Radio, RadioGroup } from "@headlessui/react";
 import { useTime } from "../../contexts/useTimeProvider";
 
 const RadioBtn = ({
@@ -22,7 +22,7 @@ const ClockFormatToggleButton = () => {
   const { clockFormat, setClockFormat } = useTime();
   return (
     <RadioGroup value={clockFormat} onChange={setClockFormat} className="w-fit">
-      <Field className="flex w-fit items-center  border rounded-lg hover:cursor-pointer">
+      <Field className="flex items-center border rounded-lg w-fit hover:cursor-pointer">
         <RadioBtn value="12-Hour">12 Hour Clock</RadioBtn>
         <RadioBtn value="24-Hour">24 Hour Clock</RadioBtn>
       </Field>

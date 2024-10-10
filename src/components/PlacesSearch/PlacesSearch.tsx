@@ -1,7 +1,6 @@
 import { FormEvent, useState } from "react";
 import PlacesModal from "../PlacesModal/PlacesModal";
 import { NominatimPlace } from "../../App";
-import ClockFormatToggleButton from "../ClockFormatToggleButton/ClockFomatToggleButton";
 
 interface PlacesSearchProps {
   onSelectPlace: (arg0: NominatimPlace, timezone: string) => void;
