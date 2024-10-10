@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import Clock from "./components/Clock/Clock";
 import { TimeProvider } from "./contexts/TimeProvider";
 import PlacesSearch from "./components/PlacesSearch/PlacesSearch";
+import { useTime } from "./contexts/useTimeProvider";
+import ClockFormatToggleButton from "./components/ClockFormatToggleButton/ClockFomatToggleButton";
 
 export type NominatimPlace = {
   place_id: number;
@@ -52,11 +54,12 @@ function App() {
   };
 
   return (
-    <div className="flex flex-col justify-between">
-      <div className="h-full min-h-[90vh]">
-        <PlacesSearch onSelectPlace={addClock} />
-        {clocks.length > 0 ? (
-          <TimeProvider>
+    <TimeProvider>
+      <div className="flex flex-col justify-between">
+        <div className="h-full min-h-[90vh]">
+          <PlacesSearch onSelectPlace={addClock} />
+          <ClockFormatToggleButton />
+          {clocks.length > 0 ? (
             <div className="flex flex-wrap justify-center">
               {clocks.map(({ place, timeZone }) => (
                 <Clock
@@ -67,33 +70,33 @@ function App() {
                 />
               ))}
             </div>
-          </TimeProvider>
-        ) : null}
+          ) : null}
+        </div>
+        <div className="w-full h-full text-center">
+          <p>
+            Look up an place and display the local time there (uses the{" "}
+            <a
+              target="_blank"
+              className="underline"
+              href="https://nominatim.org/"
+            >
+              Nominatim database
+            </a>
+            ).
+          </p>
+          <p>
+            The time zone is calculated using a ray tracing package called{" "}
+            <a
+              target="_blank"
+              className="underline"
+              href="https://crates.io/crates/tzf-rs"
+            >
+              tzf-rs
+            </a>
+          </p>
+        </div>
       </div>
-      <div className="w-full h-full text-center">
-        <p>
-          Look up an place and display the local time there (uses the{" "}
-          <a
-            target="_blank"
-            className="underline"
-            href="https://nominatim.org/"
-          >
-            Nominatim database
-          </a>
-          ).
-        </p>
-        <p>
-          The time zone is calculated using a ray tracing package called{" "}
-          <a
-            target="_blank"
-            className="underline"
-            href="https://crates.io/crates/tzf-rs"
-          >
-            tzf-rs
-          </a>
-        </p>
-      </div>
-    </div>
+    </TimeProvider>
   );
 }
 

@@ -11,7 +11,7 @@ const Clock = ({
   timeZone: string;
   onClose: () => void;
 }) => {
-  const { currentTime } = useTime();
+  const { currentTime, clockFormat } = useTime();
 
   return (
     <div className="relative p-4 m-2 border rounded-lg shadow-md dark:text-white w-96 border-1">
@@ -27,8 +27,8 @@ const Clock = ({
           <p className="text-xl">
             {new Date(currentTime).toLocaleTimeString("en-US", {
               timeZone,
-              hour12: false,
-              hour: "2-digit",
+              hour12: clockFormat === "12-Hour" ? true : false,
+              hour: clockFormat === "24-Hour" ? "2-digit" : "numeric",
               minute: "2-digit",
             })}
           </p>
