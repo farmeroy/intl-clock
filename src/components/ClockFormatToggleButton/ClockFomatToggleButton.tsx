@@ -1,4 +1,4 @@
-import { Field,  Radio, RadioGroup } from "@headlessui/react";
+import { Field, Radio, RadioGroup } from "@headlessui/react";
 import { useTime } from "../../contexts/useTimeProvider";
 
 const RadioBtn = ({
@@ -11,7 +11,7 @@ const RadioBtn = ({
   return (
     <Radio
       value={value}
-      className="w-fit p-1 h-fit bg-gray disabled:opacity-2 data-[checked]:bg-white data-[checked]:text-black text-sm"
+      className="w-fit p-1 h-fit bg-gray disabled:opacity-2 data-[checked]:bg-slate-200  dark:data-[checked]:bg-white dark:data-[checked]:text-black text-sm"
     >
       {children}
     </Radio>
