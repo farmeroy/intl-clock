@@ -1,8 +1,13 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import {
+  act,
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+} from "@testing-library/react";
 import PlacesSearch from "./PlacesSearch";
 import { NominatimPlace } from "../../App";
-import "@testing-library/jest-dom";
 
 describe("PlacesSearch", () => {
   const mockOnSelectPlace = vi.fn();
@@ -16,7 +21,6 @@ describe("PlacesSearch", () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.stubGlobal("fetch", vi.fn());
   });
 
   it("renders the search form correctly", () => {
@@ -39,10 +43,9 @@ describe("PlacesSearch", () => {
   });
 
   it("calls API when form is submitted", async () => {
-    const mockResponse = [mockPlace];
     const mockFetch = vi.fn().mockResolvedValueOnce({
       ok: true,
-      json: () => Promise.resolve(mockResponse),
+      json: () => Promise.resolve([]),
     });
     vi.stubGlobal("fetch", mockFetch);
 
@@ -52,7 +55,9 @@ describe("PlacesSearch", () => {
     const searchButton = screen.getByText("Search");
 
     fireEvent.change(input, { target: { value: "London" } });
-    fireEvent.click(searchButton);
+    act(() => {
+      fireEvent.click(searchButton);
+    });
 
     await waitFor(() => {
       expect(mockFetch).toHaveBeenCalledWith(
@@ -64,8 +69,13 @@ describe("PlacesSearch", () => {
   });
 
   it("handles API error gracefully", async () => {
-    const consoleSpy = vi.spyOn(console, "error");
-    (global.fetch as jest.Mock).mockRejectedValueOnce(new Error("API Error"));
+    const consoleSpy = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockRejectedValueOnce(new Error("API Error"))
+    );
 
     render(<PlacesSearch onSelectPlace={mockOnSelectPlace} />);
 
@@ -81,19 +91,21 @@ describe("PlacesSearch", () => {
   });
 
   it("handles timezone fetch and calls onSelectPlace", async () => {
-    const mockTimezone = { timezone: "Europe/London" };
+    vi.stubEnv("VITE_TIME_ZONE_URL", "https://tz.test");
 
-    // Mock the places search response
-    (global.fetch as jest.Mock).mockResolvedValueOnce({
-      ok: true,
-      json: () => Promise.resolve([mockPlace]),
-    });
-
-    // Mock the timezone API response
-    (global.fetch as jest.Mock).mockResolvedValueOnce({
-      ok: true,
-      json: () => Promise.resolve(mockTimezone),
-    });
+    const mockFetch = vi
+      .fn()
+      // 1st call: places search
+      .mockResolvedValueOnce({
+        ok: true,
+        json: () => Promise.resolve([mockPlace]),
+      })
+      // 2nd call: timezone lookup
+      .mockResolvedValueOnce({
+        ok: true,
+        json: () => Promise.resolve({ timezone: "Europe/London" }),
+      });
+    vi.stubGlobal("fetch", mockFetch);
 
     render(<PlacesSearch onSelectPlace={mockOnSelectPlace} />);
 
